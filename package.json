@@ -2,7 +2,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "playground:dev": "npm --prefix playground run dev",
+    "playground:build": "npm --prefix playground run build",
+    "playground:preview": "npm --prefix playground run preview"
   },
   "main": "dist/cchatkit-wrapper-vue.umd.js",
   "module": "dist/chatkit-wrapper-vue.es.js",

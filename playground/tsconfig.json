@@ -1,0 +1,14 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": ".",
+    "allowImportingTsExtensions": true,
+    "types": ["vite/client"],
+    "paths": {
+      "chatkit-wrapper-vue": ["../src/index.ts"]
+    }
+  },
+  "include": ["src/**/*", "vite.config.ts", "env.d.ts"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
