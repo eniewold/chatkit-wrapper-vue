@@ -65,7 +65,7 @@ export default defineNuxtConfig({
 After the module has been installed it can be used in your .vue file. the workflowKey (or workflow-key) property is required, as retrieved from the OpenAI Agent builder. 
 
 ```ts
-<script lang="ts">
+<script setup lang="ts">
   import { ChatKit } from 'chatkit-wrapper-vue'
 </script>
 
