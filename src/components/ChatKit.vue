@@ -1,9 +1,9 @@
 <script setup lang="ts">
-    import { ref, onMounted, computed } from 'vue'
+    import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
     import { checkUserId, getThreadId, setThreadId } from '../lib'
-    import type { OpenAIChatKit, ChatKitOptions, ThemeOption, StartScreenOption } from '@openai/chatkit'
+    import type { OpenAIChatKit, ChatKitOptions, ThemeOption, StartScreenOption, ChatKitEvents } from '@openai/chatkit'
     import { useLibraryConfig } from '../index'
-    import type { ChatKitProperties } from '../types/ChatKitProperties'
+    import type { ChatKitProperties, ChatKitHandlers } from '../types/ChatKitProperties'
     import { $fetch } from 'ofetch'
     import '../lib/chatkit'
 
@@ -12,10 +12,26 @@
 
     // Options and properties
     defineOptions({ name: 'ChatKit' })
+
+    // Define properties for the our component
     const props = defineProps<ChatKitProperties>()
 
     // Config
     const config = useLibraryConfig()
+
+    // Create a list of all possible listeners
+    const ourListeners: Record<keyof ChatKitHandlers, keyof ChatKitEvents> = {
+        'onReady': 'chatkit.ready',
+        'onError': 'chatkit.error',
+        'onLog': 'chatkit.log',
+        'onResponseStart': 'chatkit.response.start',
+        'onResponseEnd': 'chatkit.response.end',
+        'onThreadChange': 'chatkit.thread.change',
+        'onThreadLoadStart': 'chatkit.thread.load.start',
+        'onThreadLoadEnd': 'chatkit.thread.load.end',
+    }
+    // Keep track of active listeners for dispose purposes
+    const activeListeners: Array<() => void> = []
 
     // Dark mode detector (select dark mode automatically if root document contains dark class)
     const isDark = computed(() =>
@@ -30,49 +46,28 @@
         // Make sure to use reference as web component
         const chatkit = chatkitElement.value as OpenAIChatKit
 
+        // Apply the event handlers
+        for (const [handler, event] of Object.entries(ourListeners) as [keyof ChatKitHandlers, keyof ChatKitEvents][]) {
+            const listener = (payload: any) => {
+                // Call external handler (if any)
+                props[handler]?.(payload)
+                // Save the thread when changed
+                if (event === 'chatkit.thread.change') setThreadId(payload.detail.threadId)
+            }
+            chatkit.addEventListener(event, listener)
+            // Store the event and listener in callable function array
+            activeListeners.push(() => chatkit.removeEventListener(event, listener))
+        }
+
         // Retrieve or create a new unique id from local storage
         const userId = props.userId || checkUserId()
-        const threadId = props.initialThread || getThreadId()
         const workflowId = props.workflowKey || (config ? config.chatkitOpenAIWorkflowKey : undefined);
 
         // Check properties
         if (!workflowId) throw new Error('OpenAI Workflow id property (workflowKey) is not given but is required')
 
-        // Events
-        chatkit.addEventListener('chatkit.log', function(event) {
-            if (props.onLog) props.onLog(event);
-            console.log('chatkit.log', event.detail)
-        })
-        chatkit.addEventListener('chatkit.error', function(event) {
-            if (props.onError) props.onError(event);
-            console.log('chatkit.error', event.detail)
-        })
-        chatkit.addEventListener('chatkit.response.start', function(event) {
-            if (props.onResponseStart) props.onResponseStart(event);
-            console.log('chatkit.response.start', event.detail)
-        })
-        chatkit.addEventListener('chatkit.response.end', function(event) {
-            if (props.onResponseEnd) props.onResponseEnd(event);
-            console.log('chatkit.response.end', event.detail)
-        })
-        chatkit.addEventListener('chatkit.thread.change', function(event) {
-            // Store thread last seen/created
-            setThreadId(event.detail.threadId);
-            if (props.onThreadChange) props.onThreadChange(event);
-            console.log('chatkit.thread.change', event.detail)
-        })
-        chatkit.addEventListener('chatkit.thread.load.start', function(event) {
-            if (props.onThreadLoadStart) props.onThreadLoadStart(event);
-            console.log('chatkit.thread.load.start', event.detail)
-        })
-        chatkit.addEventListener('chatkit.thread.load.end', function(event) {
-            if (props.onThreadLoadEnd) props.onThreadLoadEnd(event);
-            console.log('chatkit.thread.load.end', event.detail)
-        })
-
         // Create an options structure
         const options: ChatKitOptions = {
-            initialThread: threadId,
             api: {
                 async getClientSecret(currentClientSecret: string | null) {
                     // Create a new session is no secret is not passed as parameter
@@ -89,43 +84,54 @@
                     }
                     return currentClientSecret
                 },
+                ...props.api
             },
-            theme:  {
+            //locale: '',
+            theme: {
                 colorScheme: isDark.value ? 'dark' : 'light',
-                radius: 'round',
-                density: 'spacious',
                 ...props.theme
-            } as ThemeOption,
-            composer: {
-                attachments: {
-                    enabled: false,
-                },
+            },
+            initialThread: props.initialThread || getThreadId(),
+            //onClientTool: {}
+            header: {
+                ...props.header
+            },
+            history: {
+                ...props.history
             },
             startScreen: {
-                greeting: 'Welcome to this ChatKit example',
-                prompts: [
-                    {
-                        icon: 'circle-question',
-                        label: 'What is ChatKit?',
-                        prompt: 'What is ChatKit and what does it do?',
-                    },
-                    {
-                        icon: 'write',
-                        label: 'How can I implement this into my own app?',
-                        prompt: 'Explain how this component (https://github.com/eniewold/openai-chatkit-vue) can be imported and used insied a containing web app. Check for requirements and needed configuration items. ',
-                    },
-                ],
                 ...props.startScreen
             },
+            threadItemActions: {
+                ...props.threadItemActions
+            },
+            composer: {
+                ...props.composer
+            },
+            disclaimer: {
+                text: "AI-generated content — please verify important information.",
+                ...props.disclaimer
+            },
+            entities: {
+                ...props.entities
+            },
+            widgets: {
+                ...props.widgets
+            }
         }
 
-        // Finally set the options
+        // Apply the web component options
         chatkit.setOptions(options)
 
+    });
+
+    // Make sure to remove all active listeners when unmounting
+    onBeforeUnmount(() => {
+        activeListeners.forEach((f) => f());
     });
 
 </script>
 
 <template>
-    <openai-chatkit ref="chatkitElement" />
+    <openai-chatkit ref="chatkitElement" :class="props.class" :style="props.style" />
 </template>

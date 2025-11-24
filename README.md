@@ -106,6 +106,7 @@ export default defineNuxtConfig({
 The wrapper wires the `openai-chatkit` element events into Vue-friendly callbacks:
 
 - `chatkit.error` → `onError` — Raised when the component encounters an error; payload includes an `Error` instance.
+- `chatkit.ready` → `onReady` — Fired when the component reaches a ready state.
 - `chatkit.response.start` → `onResponseStart` — Fired when ChatKit begins streaming a response.
 - `chatkit.response.end` → `onResponseEnd` — Fired after the streamed response completes.
 - `chatkit.thread.change` → `onThreadChange` — Fired when the active thread changes; includes the new `threadId` (or `null`).
@@ -120,3 +121,10 @@ Use the [OpenAI ChatKit Studio Playground](https://chatkit.studio/playground) to
 ## License
 
 This package bundles the OpenAI ChatKit web component and related assets under the [Apache 2.0](./LICENSE) license. See [NOTICE-OPENAI](./NOTICE) for attribution details consistent with the upstream `@openai/chatkit` distribution.
+
+## Unsupported / To-do
+
+The following items are not (yet) supported and will be implemented as needed:
+
+- Client Tool handlers (onClientTool)
+- Customize locale (is currently automatically chosen through browser)
