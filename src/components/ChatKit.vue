@@ -1,10 +1,10 @@
 <script setup lang="ts">
-    import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
+    import '../lib/chatkit'
+    import { ref, onMounted, computed, onBeforeUnmount, defineOptions, defineProps } from 'vue'
     import { checkUserId, getThreadId, setThreadId } from '../lib'
     import type { OpenAIChatKit, ChatKitOptions, ThemeOption, StartScreenOption, ChatKitEvents } from '@openai/chatkit'
     import type { ChatKitProperties, ChatKitHandlers } from '../types/ChatKitProperties'
     import { $fetch } from 'ofetch'
-    import '../lib/chatkit'
 
     // chat-kit html element reference
     const chatkitElement = ref<HTMLElement | null>(null)

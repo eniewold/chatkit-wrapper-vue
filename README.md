@@ -126,8 +126,17 @@ The following items are not (yet) supported and will be implemented as needed:
 - Customize locale (is currently automatically chosen through browser)
 - Widget events
 
+## FAQ / Common Errors
+
+- When you get a `HTMLElement is not defined` error, make sure to use `<ClientOnly>` tags around the component to force client only rendering.
+- Warnings showing `Failed to resolve component: ChatKit` in console, make sure to setup the import correctly. (Might also be component loading timing issue).
+- Errors in console `Invalid client secret format` signal that no proxy is found, install Nuxt module 'chatkit-wrapper-nuxt' that contains a proxy server component.
+
 ## Version History
 
+- 0.3.4 - Explicit import of some vue methods
+- 0.3.3 - Small fixes to exported types
+- 0.3.2 - First public package update
 - 0.2.0 - Added support for event listeners, you can now trigger functions on events triggered by the OpenAI ChatKit.
 - 0.1.1 - Implemented all support properties on component as pass-through and with default functionality or default values.
 - 0.1.0 - Initial version with functional wrapper.
