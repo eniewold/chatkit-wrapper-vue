@@ -28,20 +28,9 @@ A proxy is required to hide OpenAI secrets from the browser. Use the companion [
 npm install chatkit-vue
 ```
 
-### 2. Register the component
+### 2. Add custom element exception
 
 #### Vue 3
-
-```ts
-// main.ts
-import { createApp } from 'vue'
-import App from './App.vue'
-import ChatKit from 'chatkit-vue'
-
-const app = createApp(App)
-app.component('ChatKit', ChatKit)
-app.mount('#app')
-```
 
 Add the custom element rule so Vue does not attempt to compile the underlying web component:
 
@@ -53,17 +42,6 @@ export default defineConfig({
       isCustomElement: (tag) => tag.startsWith('openai-chatkit'),
     },
   },
-})
-```
-
-If you prefer plugin-style registration (helpful for Nuxt-style runtime config), you can also install the helper with your workflow key:
-
-```ts
-import ChatKitPlugin from 'chatkit-vue'
-
-app.use(ChatKitPlugin, {
-  chatkitOpenAIWorkflowKey: process.env.VITE_OPENAI_WORKFLOW_ID!,
-  endpoint: '/api/openai/chatkit',
 })
 ```
 
@@ -82,12 +60,28 @@ export default defineNuxtConfig({
 })
 ```
 
+### 3. Usage
+
+After the module has been installed it can be used in your .vue file. the workflowKey (or workflow-key) property is required, as retrieved from the OpenAI Agent builder. 
+
+```ts
+import { ChatKit } from 'chatkit-vue'
+
+<template>
+  <ClientOnly>
+    <ChatKit workflowKey="wf_xxxxxx" />
+  </ClientOnly>
+</template>
+```
+
+Note that a proxy server is needed to hide secret OpenAI API keys, check out the Nuxt proxy server module for ready-to-go implementation. 
+
 ## Properties
 
 `ChatKitProperties` mirrors the options from `@openai/chatkit` with Vue-friendly types:
 
+- `workflowKey?: string` — Required Workflow ID (`wf_...`) required for ChatKit sessions.
 - `userId?: string` — Optional user identifier. When omitted, the component generates and reuses a local ID for the session.
-- `workflowKey?: string` — Workflow ID (`wf_...`) required for ChatKit sessions. If not provided directly, the plugin can inject it via runtime config.
 - `initialThread?: string` — Thread ID to open first. Defaults to a new thread when undefined.
 - `theme?: Partial<ThemeOption>` — Visual configuration for color scheme, radius, density, and other theming fields exposed by ChatKit’s `ChatKitTheme` support.
 - `api?: Partial<HostedApiConfig>` — API configuration. Provide `getClientSecret` to mint/refresh client secrets from your proxy; matches ChatKit’s hosted API contract.
@@ -128,3 +122,10 @@ The following items are not (yet) supported and will be implemented as needed:
 
 - Client Tool handlers (onClientTool)
 - Customize locale (is currently automatically chosen through browser)
+- Widget events
+
+## Version History
+
+- 0.2.0 - Added support for event listeners, you can now trigger functions on events triggered by the OpenAI ChatKit.
+- 0.1.1 - Implemented all support properties on component as pass-through and with default functionality or default values.
+- 0.1.0 - Initial version with functional wrapper.

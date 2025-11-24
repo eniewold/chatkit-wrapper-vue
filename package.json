@@ -1,7 +1,4 @@
 {
-  "name": "chatkit-vue",
-  "private": true,
-  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -29,5 +26,51 @@
     "vite": "^7.2.4",
     "vue": "^3.5.24",
     "vue-tsc": "^3.1.4"
-  }
+  },
+
+  "private": true,
+  "version": "0.3.2",
+  "name": "chatkit-vue",
+  "description": "A Vue 3 wrapper around the OpenAI ChatKit web component so Vue and Nuxt developers can drop a fully featured AI chat UI into their apps.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eniewold/chatkit-vue"
+  },
+  "bugs": {
+    "url": "https://github.com/eniewold/chatkit-vue/issues"
+  },
+  "homepage": "https://github.com/eniewold/chatkit-vue",
+  "author": {
+    "name": "Edward Niewold",
+    "url": "https://github.com/eniewold"
+  },
+  "license": "MIT",
+  "keywords": [
+    "vue",
+    "vue3",
+    "vue-component",
+    "vue-plugin",
+    "nuxt",
+    "nuxt3",
+    "nuxt-module",
+    "chat",
+    "chat-ui",
+    "chatbot",
+    "chat-component",
+    "chat-interface",
+    "chat-widget",
+    "openai",
+    "openai-api",
+    "openai-chat",
+    "openai-chatkit",
+    "ai",
+    "ai-chat",
+    "ai-assistant",
+    "ai-ui",
+    "web-component",
+    "custom-element",
+    "wrapper",
+    "ui-component",
+    "frontend"
+  ]
 }

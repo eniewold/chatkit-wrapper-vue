@@ -14,14 +14,9 @@ export interface ChatKitHandlers {
 	onThreadLoadEnd?: (event: CustomEvent) => void
 }
 
-// Properties as supported from OpenAI chatkit itself
-export interface ChatKitPropertiesOpenAI extends ChatKitHandlers {
-	// Optional user ID to associate with the chat session - Is managed automatically if not provided
-	userId?: string
-	// Required workflow key to use for the chat session - use workflow key from your OpenAI ChatKit dashboard (wf_xxxxx)
-	workflowKey?: string
-	// Initial thread to show or empty for new thread - Is managed automatically if not provided
-	initialThread?: string
+
+// Properties for customization of the layout
+export interface ChatKitPropertiesCustomization extends ChatKitHandlers {
 	// Optional properties to customize the chatkit experience
 	theme?: Partial<ThemeOption>
 	api?: Partial<HostedApiConfig>
@@ -35,7 +30,18 @@ export interface ChatKitPropertiesOpenAI extends ChatKitHandlers {
 	widgets?: Partial<WidgetsOption>
 }
 
-export interface ChatKitProperties extends ChatKitPropertiesOpenAI {
+// Properties (required and optional) for initialization of chat control
+export interface ChatKitPropertiesInit extends ChatKitPropertiesCustomization {
+	// Required workflow key to use for the chat session - use workflow key from your OpenAI ChatKit dashboard (wf_xxxxx)
+	workflowKey: string
+	// Optional user ID to associate with the chat session - Is managed automatically if not provided
+	userId?: string
+	// Initial thread to show or empty for new thread - Is managed automatically if not provided
+	initialThread?: string
+}
+
+// Pass-through of class and style properties set on the component itself
+export interface ChatKitProperties extends ChatKitPropertiesInit {
 	class?: string;
 	style?: string;
 }

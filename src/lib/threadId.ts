@@ -5,7 +5,6 @@ export function getThreadId() {
 }
 
 export function setThreadId(id: string | null) {
-  // Create a new one if missing
   if (id) {
     sessionStorage.setItem(KEY, id)
   }

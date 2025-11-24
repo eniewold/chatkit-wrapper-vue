@@ -2,7 +2,6 @@
     import { ref, onMounted, computed, onBeforeUnmount } from 'vue'
     import { checkUserId, getThreadId, setThreadId } from '../lib'
     import type { OpenAIChatKit, ChatKitOptions, ThemeOption, StartScreenOption, ChatKitEvents } from '@openai/chatkit'
-    import { useLibraryConfig } from '../index'
     import type { ChatKitProperties, ChatKitHandlers } from '../types/ChatKitProperties'
     import { $fetch } from 'ofetch'
     import '../lib/chatkit'
@@ -15,9 +14,6 @@
 
     // Define properties for the our component
     const props = defineProps<ChatKitProperties>()
-
-    // Config
-    const config = useLibraryConfig()
 
     // Create a list of all possible listeners
     const ourListeners: Record<keyof ChatKitHandlers, keyof ChatKitEvents> = {
@@ -61,10 +57,9 @@
 
         // Retrieve or create a new unique id from local storage
         const userId = props.userId || checkUserId()
-        const workflowId = props.workflowKey || (config ? config.chatkitOpenAIWorkflowKey : undefined);
 
         // Check properties
-        if (!workflowId) throw new Error('OpenAI Workflow id property (workflowKey) is not given but is required')
+        if (!props.workflowKey) throw new Error('OpenAI Workflow id property (workflowKey) is not given but is required')
 
         // Create an options structure
         const options: ChatKitOptions = {
@@ -77,7 +72,7 @@
                             method: 'POST',
                             body: {
                                 user: userId,
-                                workflow: { id: workflowId },
+                                workflow: { id: props.workflowKey },
                             },
                         })
                         return data.client_secret
@@ -109,7 +104,7 @@
                 ...props.composer
             },
             disclaimer: {
-                text: "AI-generated content — please verify important information.",
+                text: "AI-generated content - please verify important information.",
                 ...props.disclaimer
             },
             entities: {
