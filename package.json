@@ -4,8 +4,8 @@
     "dev": "vite",
     "build": "vite build"
   },
-  "main": "dist/chatkit-vue.umd.js",
-  "module": "dist/chatkit-vue.es.js",
+  "main": "dist/cchatkit-wrapper-vue.umd.js",
+  "module": "dist/chatkit-wrapper-vue.es.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
@@ -28,18 +28,18 @@
     "vue-tsc": "^3.1.4"
   },
 
-  "private": true,
+  "private": false,
   "version": "0.3.2",
-  "name": "chatkit-vue",
+  "name": "chatkit-wrapper-vue",
   "description": "A Vue 3 wrapper around the OpenAI ChatKit web component so Vue and Nuxt developers can drop a fully featured AI chat UI into their apps.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/eniewold/chatkit-vue"
+    "url": "https://github.com/eniewold/chatkit-wrapper-vue"
   },
   "bugs": {
-    "url": "https://github.com/eniewold/chatkit-vue/issues"
+    "url": "https://github.com/eniewold/chatkit-wrapper-vue/issues"
   },
-  "homepage": "https://github.com/eniewold/chatkit-vue",
+  "homepage": "https://github.com/eniewold/chatkit-wrapper-vue",
   "author": {
     "name": "Edward Niewold",
     "url": "https://github.com/eniewold"

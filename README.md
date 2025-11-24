@@ -2,7 +2,7 @@
 
 A Vue 3 wrapper around the OpenAI ChatKit web component so Vue and Nuxt developers can drop a fully featured AI chat UI into their apps.
 
-A proxy is required to hide OpenAI secrets from the browser. Use the companion [ChatKit Nuxt server](https://github.com/eniewold/chatkit-nuxt) to expose secure `/api/openai/chatkit/*` endpoints.
+A proxy is required to hide OpenAI secrets from the browser. Use the companion [ChatKit Wrapper Nuxt server](https://github.com/eniewold/chatkit-wrapper-nuxt) to expose secure `/api/openai/chatkit/*` endpoints.
 
 ## Features
 
@@ -25,7 +25,7 @@ A proxy is required to hide OpenAI secrets from the browser. Use the companion [
 ### 1. Install the package
 
 ```bash
-npm install chatkit-vue
+npm install chatkit-wrapper-vue
 ```
 
 ### 2. Add custom element exception
@@ -65,7 +65,7 @@ export default defineNuxtConfig({
 After the module has been installed it can be used in your .vue file. the workflowKey (or workflow-key) property is required, as retrieved from the OpenAI Agent builder. 
 
 ```ts
-import { ChatKit } from 'chatkit-vue'
+import { ChatKit } from 'chatkit-wrapper-vue'
 
 <template>
   <ClientOnly>

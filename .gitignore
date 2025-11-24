@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 /.vs
 /.vscode
+
+# accidental packages
+*.tgz

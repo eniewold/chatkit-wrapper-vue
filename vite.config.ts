@@ -17,7 +17,7 @@ export default defineConfig({
         lib: {
             entry: 'src/index.ts',
             name: 'ChatKitVue',
-            fileName: (format) => `chatkit-vue.${format}.js`,
+            fileName: (format) => `chatkit-wrapper-vue.${format}.js`,
             formats: ['es', 'umd']
         },
         rollupOptions: {
