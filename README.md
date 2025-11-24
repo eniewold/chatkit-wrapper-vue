@@ -47,7 +47,7 @@ export default defineConfig({
 
 #### Nuxt 3
 
-Add the Vue compiler rule to `nuxt.config.ts` and register the module (or use a client plugin) similar to Vue. Combine it with the [chatkit-nuxt](https://github.com/eniewold/chatkit-nuxt) server to expose the `/api/openai/chatkit/sessions` endpoint that the component calls for `getClientSecret`.
+Add the Vue compiler rule to `nuxt.config.ts` and register the module (or use a client plugin) similar to Vue. Combine it with the [chatkit-wrapper-nuxt](https://github.com/eniewold/chatkit-wrapper-nuxt) server to expose the `/api/openai/chatkit/sessions` endpoint that the component calls for `getClientSecret`.
 
 ```ts
 // nuxt.config.ts
@@ -65,7 +65,9 @@ export default defineNuxtConfig({
 After the module has been installed it can be used in your .vue file. the workflowKey (or workflow-key) property is required, as retrieved from the OpenAI Agent builder. 
 
 ```ts
-import { ChatKit } from 'chatkit-wrapper-vue'
+<script lang="ts">
+  import { ChatKit } from 'chatkit-wrapper-vue'
+</script>
 
 <template>
   <ClientOnly>
