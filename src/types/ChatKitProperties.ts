@@ -2,7 +2,12 @@
 import type { ThemeOption, HostedApiConfig, HeaderOption, HistoryOption, StartScreenOption, ThreadItemActionsOption, ComposerOption, DisclaimerOption, EntitiesOption, WidgetsOption } from '@openai/chatkit'
 export type { ThemeOption, HostedApiConfig, HeaderOption, HistoryOption, StartScreenOption, ThreadItemActionsOption, ComposerOption, DisclaimerOption, EntitiesOption, WidgetsOption }
 
-export interface ChatKitHandlers {
+// Session creation parameters are included from OpenAI chatkit definitions
+import type { SessionCreateParams } from 'openai/resources/beta/chatkit'
+export type { SessionCreateParams }
+
+// All supported event handlers by ChatKit
+export interface ChatKitHandlers {	
 	// Event callbacks, set property to functions to handle events
 	onReady?: (event: CustomEvent) => void
 	onError?: (event: CustomEvent) => void
@@ -13,7 +18,6 @@ export interface ChatKitHandlers {
 	onThreadLoadStart?: (event: CustomEvent) => void
 	onThreadLoadEnd?: (event: CustomEvent) => void
 }
-
 
 // Properties for customization of the layout
 export interface ChatKitPropertiesCustomization extends ChatKitHandlers {
@@ -34,6 +38,8 @@ export interface ChatKitPropertiesCustomization extends ChatKitHandlers {
 export interface ChatKitPropertiesInit extends ChatKitPropertiesCustomization {
 	// Required workflow key to use for the chat session - use workflow key from your OpenAI ChatKit dashboard (wf_xxxxx)
 	workflowKey: string
+	// Optional workflow version string for specific workflow version, leave empty for latest production release
+	workflowVersion?: string
 	// Optional user ID to associate with the chat session - Is managed automatically if not provided
 	userId?: string
 	// Initial thread to show or empty for new thread - Is managed automatically if not provided
