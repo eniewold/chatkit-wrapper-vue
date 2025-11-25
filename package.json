@@ -1,11 +1,8 @@
 {
   "type": "module",
   "scripts": {
-    "dev": "vite",
     "build": "vite build",
-    "playground:dev": "npm --prefix playground run dev",
-    "playground:build": "npm --prefix playground run build",
-    "playground:preview": "npm --prefix playground run preview"
+    "dev": "npm --prefix playground run dev"
   },
   "main": "dist/cchatkit-wrapper-vue.umd.js",
   "module": "dist/chatkit-wrapper-vue.es.js",
@@ -24,15 +21,16 @@
     "@types/node": "^24.10.1",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/tsconfig": "^0.8.1",
-    "vite-plugin-dts": "^4.2.3",
+    "vite-plugin-dts": "^4.5.4",
     "typescript": "~5.9.3",
     "vite": "^7.2.4",
     "vue": "^3.5.24",
-    "vue-tsc": "^3.1.4"
+    "vue-tsc": "^3.1.4",
+    "openai": "^6.9.1"
   },
 
   "private": false,
-  "version": "0.3.4",
+  "version": "0.3.5",
   "name": "chatkit-wrapper-vue",
   "description": "A Vue 3 wrapper around the OpenAI ChatKit web component so Vue and Nuxt developers can drop a fully featured AI chat UI into their apps.",
   "repository": {

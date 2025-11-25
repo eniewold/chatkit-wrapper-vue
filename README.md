@@ -14,11 +14,11 @@ A proxy is required to hide OpenAI secrets from the browser. Use the companion [
 
 ## Requirements
 
-- Node.js 14+ with npm, pnpm, or yarn.
+- Node.js 14+ with package manager
 - Vue 3 or Nuxt 3 project (Vite-compatible).
 - An OpenAI API key with ChatKit access and an existing workflow published in the [Chat prompts](https://platform.openai.com/chat) dashboard (use the `wf_...` workflow ID).
-- Allowed domain configured in [OpenAI domain allowlist](https://platform.openai.com/settings/organization/security/domain-allowlist) for non-development environments.
-- Backend proxy that can create ChatKit sessions and return client secrets, e.g., [chatkit-nuxt](https://github.com/eniewold/chatkit-nuxt).
+- (for non-development environment) Allowed domain configured in [OpenAI domain allowlist](https://platform.openai.com/settings/organization/security/domain-allowlist).
+- Backend proxy that can create ChatKit sessions and inject client secrets, e.g., [chatkit-wrapper-nuxt](https://github.com/eniewold/chatkit-wrapper-nuxt).
 
 ## Installation
 
@@ -28,7 +28,25 @@ A proxy is required to hide OpenAI secrets from the browser. Use the companion [
 npm install chatkit-wrapper-vue
 ```
 
-### 2. Add custom element exception
+### 2. Usage
+
+After the module has been installed it can be used in your .vue file. the workflowKey (or workflow-key) property is required, as retrieved from the OpenAI Agent builder. 
+
+```ts
+<script setup lang="ts">
+  import { ChatKit } from 'chatkit-wrapper-vue'
+</script>
+
+<template>
+  <ClientOnly>
+    <ChatKit workflowKey="wf_xxxxxx" />
+  </ClientOnly>
+</template>
+```
+
+Note that a proxy server is needed to hide secret OpenAI API keys, check out the Nuxt proxy server module for ready-to-go implementation. 
+
+### 3. (optional) Add custom element exception
 
 #### Vue 3
 
@@ -59,24 +77,6 @@ export default defineNuxtConfig({
   },
 })
 ```
-
-### 3. Usage
-
-After the module has been installed it can be used in your .vue file. the workflowKey (or workflow-key) property is required, as retrieved from the OpenAI Agent builder. 
-
-```ts
-<script setup lang="ts">
-  import { ChatKit } from 'chatkit-wrapper-vue'
-</script>
-
-<template>
-  <ClientOnly>
-    <ChatKit workflowKey="wf_xxxxxx" />
-  </ClientOnly>
-</template>
-```
-
-Note that a proxy server is needed to hide secret OpenAI API keys, check out the Nuxt proxy server module for ready-to-go implementation. 
 
 ## Properties
 
@@ -134,6 +134,7 @@ The following items are not (yet) supported and will be implemented as needed:
 
 ## Version History
 
+- 0.3.5 - README missing essential keyword in instructions
 - 0.3.4 - Explicit import of some vue methods
 - 0.3.3 - Small fixes to exported types
 - 0.3.2 - First public package update

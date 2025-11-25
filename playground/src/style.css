@@ -53,7 +53,7 @@ p {
 }
 
 .openai-chatkit {
-  height: 640px;
+  height: 65vh;
   border-radius: 16px;
   overflow: hidden;
 }

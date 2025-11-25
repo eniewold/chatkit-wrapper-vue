@@ -3,7 +3,7 @@
     import { ref, onMounted, computed, onBeforeUnmount, defineOptions, defineProps } from 'vue'
     import { checkUserId, getThreadId, setThreadId } from '../lib'
     import type { OpenAIChatKit, ChatKitOptions, ThemeOption, StartScreenOption, ChatKitEvents } from '@openai/chatkit'
-    import type { ChatKitProperties, ChatKitHandlers } from '../types/ChatKitProperties'
+    import type { ChatKitProperties, ChatKitHandlers, SessionCreateParams } from '../types/ChatKitProperties'
     import { $fetch } from 'ofetch'
 
     // chat-kit html element reference
@@ -61,6 +61,15 @@
         // Check properties
         if (!props.workflowKey) throw new Error('OpenAI Workflow id property (workflowKey) is not given but is required')
 
+        // Session create parameters
+        const sesion: SessionCreateParams = {
+            user: userId,
+            workflow: {
+                id: props.workflowKey,
+                version: props.workflowVersion
+            }
+        }
+
         // Create an options structure
         const options: ChatKitOptions = {
             api: {
@@ -71,8 +80,7 @@
                         const data: any = await $fetch('/api/openai/chatkit/sessions', {
                             method: 'POST',
                             body: {
-                                user: userId,
-                                workflow: { id: props.workflowKey },
+                                ...sesion
                             },
                         })
                         return data.client_secret
@@ -112,7 +120,7 @@
             },
             widgets: {
                 ...props.widgets
-            }
+            },
         }
 
         // Apply the web component options
