@@ -1,6 +1,6 @@
 // openai chatkit imported types (also export them for component usage)
-import type { ThemeOption, HostedApiConfig, HeaderOption, HistoryOption, StartScreenOption, ThreadItemActionsOption, ComposerOption, DisclaimerOption, EntitiesOption, WidgetsOption } from '@openai/chatkit'
-export type { ThemeOption, HostedApiConfig, HeaderOption, HistoryOption, StartScreenOption, ThreadItemActionsOption, ComposerOption, DisclaimerOption, EntitiesOption, WidgetsOption }
+import type { ThemeOption, HostedApiConfig, CustomApiConfig, HeaderOption, HistoryOption, StartScreenOption, ThreadItemActionsOption, ComposerOption, DisclaimerOption, EntitiesOption, WidgetsOption } from '@openai/chatkit'
+export type { ThemeOption, HostedApiConfig, CustomApiConfig, HeaderOption, HistoryOption, StartScreenOption, ThreadItemActionsOption, ComposerOption, DisclaimerOption, EntitiesOption, WidgetsOption }
 
 // Session creation parameters are included from OpenAI chatkit definitions
 import type { SessionCreateParams } from 'openai/resources/beta/chatkit'
@@ -23,7 +23,7 @@ export interface ChatKitHandlers {
 export interface ChatKitPropertiesCustomization extends ChatKitHandlers {
 	// Optional properties to customize the chatkit experience
 	theme?: Partial<ThemeOption>
-	api?: Partial<HostedApiConfig>
+	api?: Partial<CustomApiConfig>
 	header?: Partial<HeaderOption>
 	history?: Partial<HistoryOption>
 	startScreen?: Partial<StartScreenOption>
@@ -36,6 +36,8 @@ export interface ChatKitPropertiesCustomization extends ChatKitHandlers {
 
 // Properties (required and optional) for initialization of chat control
 export interface ChatKitPropertiesInit extends ChatKitPropertiesCustomization {
+	// url to call to kickstart chatkit communication (defaults to '/api/openai/chatkit/sessions')
+	sessionsUrl?: string
 	// Required workflow key to use for the chat session - use workflow key from your OpenAI ChatKit dashboard (wf_xxxxx)
 	workflowKey: string
 	// Optional workflow version string for specific workflow version, leave empty for latest production release

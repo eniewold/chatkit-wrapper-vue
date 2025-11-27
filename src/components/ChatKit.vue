@@ -66,18 +66,19 @@
             user: userId,
             workflow: {
                 id: props.workflowKey,
-                version: props.workflowVersion
+                version: props.workflowVersion ? String(props.workflowVersion) : undefined
             }
         }
 
         // Create an options structure
         const options: ChatKitOptions = {
             api: {
+                // https://platform.openai.com/docs/api-reference/chatkit/sessions/create
                 async getClientSecret(currentClientSecret: string | null) {
                     // Create a new session is no secret is not passed as parameter
-                    if (!currentClientSecret) {
-                        // https://platform.openai.com/docs/api-reference/chatkit/sessions/create
-                        const data: any = await $fetch('/api/openai/chatkit/sessions', {
+                    if (!currentClientSecret) {                        
+                        const url = props.sessionsUrl || '/api/openai/chatkit/sessions';
+                        const data: any = await $fetch(url, {
                             method: 'POST',
                             body: {
                                 ...sesion
