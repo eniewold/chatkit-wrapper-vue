@@ -27,3 +27,7 @@ dist-ssr
 
 # accidental packages
 *.tgz
+
+# environment variables
+.env
+.env.*
