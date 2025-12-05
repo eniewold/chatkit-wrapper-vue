@@ -155,6 +155,7 @@ The following items are not (yet) supported and will be implemented as needed:
 
 ## Version History
 
+- 0.3.7 - Updated chatkit.js from OpenAI CDN
 - 0.3.6 - Property 'sessionsUrl' added that is used to kickstart the ChatKit communication. 
 - 0.3.5 - README missing essential keyword in instructions
 - 0.3.4 - Explicit import of some vue methods
